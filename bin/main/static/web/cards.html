@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>MindHub HomeBanking</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/f60c92db8d.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="wrapper d-flex align-items-stretch">
+            <div>
+                <div class="open-menu" @click="isActive = !isActive">
+                    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                        <i class="fa fa-bars"></i>
+                        <span class="sr-only">Toggle Menu</span>
+                    </button>
+                </div>
+                <nav id="sidebar" :class="{show: isActive}">
+                    <span class="closebtn" @click="isActive = !isActive">&times;</span>
+                    <div class="p-4 menu-content">
+                        <h1><a href="index.html" class="logo">MindBank<span>{{client.firstName}}
+                                    {{client.lastName}}</span></a></h1>
+                        <ul class="list-unstyled components mb-5">
+                            <li>
+                                <a href="./index.html"><span class="fa fa-home mr-3"></span>Inicio</a>
+                            </li>
+                            <li>
+                                <a href="./accounts.html"><span class="fa fa-user mr-3"></span>Cuentas</a>
+                            </li>
+                            <li class="active">
+                                <a href="#"><span class="fa fa-credit-card mr-3"></span>Tarjetas</a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="fa fa-file-invoice-dollar mr-3"></span>Pagos</a>
+                            </li>
+                            <li>
+                            <li>
+                                <a href="#"><span class="fa fa-money-bill-trend-up mr-3"></span>Inversiones</a>
+                            </li>
+                            <li>
+                                <a href="./transfers.html"><span
+                                        class="fa fa-arrows-rotate mr-3"></span>Tranferencias</a>
+                                <font-awesome-icon icon="fa-light fa-money-check-dollar" />
+                            </li>
+                            <li>
+                                <a href="#"><span class="fa fa-cogs mr-3"></span>Services</a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="fa fa-paper-plane mr-3"></span>Contacts</a>
+                            </li>
+                        </ul>
+                        <div class="footer mb-5">
+                            <button @click="logout" class="btn text-light"><i
+                                    class="fa-solid fa-right-from-bracket"></i>Cerrar Sesión</button>
+                        </div>
+
+                        <div class="mb-5">
+                            <h3 class="h6 mb-3">Subscribe for newsletter</h3>
+                            <form action="#" class="subscribe-form">
+                                <div class="form-group d-flex">
+                                    <div class="icon"><span class="icon-paper-plane"></span></div>
+                                    <input type="text" class="form-control" placeholder="Enter Email Address">
+                                </div>
+                            </form>
+                        </div>
+
+
+
+                    </div>
+                </nav>
+
+            </div>
+            <!-- Page Content  -->
+            <div class="flex-column container-fluid">
+                <header class="p-2">
+                    <div class="container">
+                        <div class="row py-2">
+                            <div class="col text-center">
+                                <p class="text-black-50"></p>
+                                <div class="d-flex ">
+                                    <h2 class="title">Tarjetas</h2>
+                                    <div class=" m-3 w-25 text-center">
+                                        <button @click="createCard"
+                                            class="btn bg-primary rounded text-light ">Create</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </header>
+
+                <main class="cards">
+                    <div class="modal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Modal title</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Modal body text goes here.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="cards-section me-2">
+                        <h2>Débito</h2>
+
+                        <template  v-if="debitCards.length !=0" v-for="debitCard in debitCards">
+                            
+                            <div class="d-flex">
+                                <div class="credit-card my-3">
+                                    <div class="face front" :class="{'gold': debitCard.cardColor == 'GOLD', 'titanium': debitCard.cardColor == 'TITANIUM', 'silver': debitCard.cardColor == 'silver'}">
+                                        <h3 class="bank">Mind<span class="text-primary">Bank</span></h3>
+                                        <h5 v-if="debitCard.cardColor == 'GOLD'" class="cardGold">GOLD</h5>
+                                        <h5 v-else-if="debitCard.cardColor == 'TITANIUM'" class="titaniumCard">TITANIUM</h5>
+                                        <img v-else class="silver-logo" src="./img/silver.png" alt="card silver logo">
+                                        <img class="chip"
+                                            src="https://img.icons8.com/office/60/000000/sim-card-chip.png" />
+                                        <h3 class="number">{{debitCard.number}}</h3>
+                                        <h5 class="valid"><span>VALID
+                                                THRU</span><span>{{debitCard.thruDate.slice(5,7)}}/{{(debitCard.thruDate).slice(2,4)}}</span>
+                                        </h5>
+                                        <div v-show="isExpired(new Date(debitCard.thruDate))"><img class="expired-icon"
+                                                src="./img/expired-x-icon.png" alt="expired icon">
+                                            <h5 class="exp text-light text-center">TARJETA</h5>
+                                        </div>
+                                        <h5 class="card-holder">{{debitCard.cardHolder}}</h5>
+                                        <h5 class="type">DEBITO</h5>
+                                    </div>
+                                    <div class="face back">
+                                        <div class="blackbar"></div>
+                                        <div class="cvvtext">
+                                            <div class="white-bar"></div>
+                                            <div class="cvv">{{debitCard.cvv}}</div>
+                                        </div>
+                                        <p class="text">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis ex
+                                            nec nulla posuere sollicitudin. Proin nec orci at est pellentesque malesuada
+                                            eu a neque. Maecenas quis porttitor odio. Praesent faucibus dui nisl, ac
+                                            luctus mauris pulvinar in. Morbi vitae ante a nunc ullamcorper rutrum. Donec
+                                            non interdum purus, gravida elementum mi.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="w-25 m-3 text-center">
+                                    <button @click="deleteCard(debitCard.number)"
+                                        class="btn bg-primary rounded text-light ">Delete</button>
+                                </div>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <h3>no tienes tarjetas</h3>
+                        </template>
+                    </section>
+
+                    <section class="cards-section">
+                        <h2>Crédito</h2>
+                        <template v-for="creditCard in creditCards" v-if="creditCards.length !=0">
+                            <div class="credit-cards ">
+                                <div v-show="creditCard.cardColor == 'GOLD'">
+                                    <div class="credit-card my-3">
+
+                                        <div class="face front gold">
+                                            <h3 class="bank ">Mind<span class="text-primary">Bank</span></h3>
+                                            <h5 class="cardGold">GOLD</h5>
+                                            <img class="chip"
+                                                src="https://img.icons8.com/office/60/000000/sim-card-chip.png" />
+                                            <h3 class="number">{{creditCard.number}}</h3>
+                                            <h5 class="valid"><span>VALID THRU</span><span>{{
+                                                    (creditCard.thruDate).slice(5,7)}}/{{(creditCard.thruDate).slice(2,4)}}</span>
+                                            </h5>
+                                            <div v-show="isExpired(new Date(creditCard.thruDate))"><img
+                                                    class="expired-icon" src="./img/expired-x-icon.png"
+                                                    alt="expired icon">
+                                                <h5 class="exp text-light text-center">TARJETA</h5>
+                                            </div>
+                                            <h5 class="card-holder">{{creditCard.cardHolder}}</h5>
+                                            <h5 class="type">CREDITO</h5>
+                                        </div>
+                                        <div class="face back">
+                                            <div class="blackbar"></div>
+                                            <div class="cvvtext">
+                                                <div class="white-bar"></div>
+                                                <div class="cvv">{{creditCard.cvv}}</div>
+                                            </div>
+                                            <p class="text">
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis
+                                                ex
+                                                nec nulla posuere sollicitudin. Proin nec orci at est pellentesque
+                                                malesuada
+                                                eu a neque. Maecenas quis porttitor odio. Praesent faucibus dui nisl, ac
+                                                luctus mauris pulvinar in. Morbi vitae ante a nunc ullamcorper rutrum.
+                                                Donec
+                                                non interdum purus, gravida elementum mi.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="w-25 m-3 text-center">
+                                        <button @click="deleteCard(creditCard.number)"
+                                            class="btn bg-primary rounded text-light ">Delete</button>
+                                    </div>
+                                </div>
+                                <div v-show="creditCard.cardColor == 'TITANIUM'">
+                                    <div class="credit-card my-3">
+                                        <div class="face front titanium">
+                                            <h3 class="bank">Mind<span class="text-primary">Bank</span></h3>
+                                            <h4 class="titaniumCard">TITANIUM</h4>
+                                            <img class="chip"
+                                                src="https://img.icons8.com/office/60/000000/sim-card-chip.png" />
+                                            <h3 class="number">{{creditCard.number}}</h3>  
+                                            <h5 class="valid"><span>VALID
+                                                    THRU</span><span>{{(creditCard.thruDate).slice(5,7)}}/{{(creditCard.thruDate).slice(2,4)}}</span>
+                                            </h5>
+                                            <div v-show="isExpired(new Date(creditCard.thruDate))"><img
+                                                    class="expired-icon" src="./img/expired-x-icon.png"
+                                                    alt="expired icon">
+                                                <h5 class="exp text-light text-center">TARJETA</h5>
+                                            </div>
+                                            <h5 class="card-holder">{{creditCard.cardHolder}}</h5>
+                                            <h5 class="type">CREDITO</h5>
+                                        </div>
+                                        <div class="face back">
+                                            <div class="blackbar"></div>
+                                            <div class="cvvtext">
+                                                <div class="white-bar"></div>
+                                                <div class="cvv">{{creditCard.cvv}}</div>
+                                            </div>
+                                            <p class="text">
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis
+                                                ex
+                                                nec nulla posuere sollicitudin. Proin nec orci at est pellentesque
+                                                malesuada
+                                                eu a neque. Maecenas quis porttitor odio. Praesent faucibus dui nisl, ac
+                                                luctus mauris pulvinar in. Morbi vitae ante a nunc ullamcorper rutrum.
+                                                Donec
+                                                non interdum purus, gravida elementum mi.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="w-25 m-3 text-center">
+                                        <button @click="deleteCard(creditCard.number)"
+                                            class="btn bg-primary rounded text-light ">Delete</button>
+                                    </div>
+                                </div>
+
+                                <div v-show="creditCard.cardColor == 'SILVER'">
+                                    <div class="credit-card my-3 ">
+                                        <div class="face front silver">
+                                            <h3 class="bank">Mind<span class="text-primary">Bank</span></h3>
+                                            <img class="chip"
+                                                src="https://img.icons8.com/office/60/000000/sim-card-chip.png" />
+                                            <img class="silver-logo" src="./img/silver.png" alt="card silver logo">
+                                            <h3 class="number">{{creditCard.number}}</h3>
+                                            <h5 class="valid"><span>VALID
+                                                    THRU</span><span>{{creditCard.thruDate.slice(5,7)}}/{{(creditCard.thruDate).slice(2,4)}}</span>
+                                            </h5>
+                                            <div v-show="isExpired(new Date(creditCard.thruDate))"><img
+                                                    class="expired-icon" src="./img/expired-x-icon.png"
+                                                    alt="expired icon">
+                                                <h5 class="exp text-light text-center">TARJETA</h5>
+                                            </div>
+                                            <h5 class="card-holder">{{creditCard.cardHolder}}</h5>
+                                            <h5 class="type">CREDITO</h5>
+                                        </div>
+                                        <div class="face back">
+                                            <div class="blackbar"></div>
+                                            <div class="cvvtext">
+                                                <div class="white-bar"></div>
+                                                <div class="cvv">{{creditCard.cvv}}</div>
+                                            </div>
+                                            <p class="text">
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis
+                                                ex
+                                                nec
+                                                nulla posuere sollicitudin. Proin nec orci at est pellentesque malesuada
+                                                eu
+                                                a
+                                                neque. Maecenas quis porttitor odio. Praesent faucibus dui nisl, ac
+                                                luctus
+                                                mauris pulvinar in. Morbi vitae ante a nunc ullamcorper rutrum. Donec
+                                                non
+                                                interdum purus, gravida elementum mi.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="w-25 text-center">
+                                        <button @click="deleteCard(creditCard.number)"
+                                            class="btn bg-primary rounded text-light ">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+            </div>
+            </template>
+            <template v-else>
+                <h3>no tienes tarjetas</h3>
+            </template>
+            </section>
+
+            <div class="banner">
+                <h2 class="mb-2">Todo desde casa</h2>
+                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="./img/home-banking-desde-la-comodidad.webp" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>First slide label</h5>
+                                <p>Some representative placeholder content for the first slide.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="./img/bank-customer.jpeg" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Second slide label</h5>
+                                <p>Some representative placeholder content for the second slide.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="./img/happy-young-married-couple-sit-260nw-1606546729.webp" class="d-block w-100"
+                                alt="happy young married couple">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Third slide label</h5>
+                                <p>Some representative placeholder content for the third slide.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+            </div>
+            </main>
+            <footer class="mt-5">
+                <p>
+                    Copyright &copy;{{new Date().getFullYear()}} All rights reserved |
+                    Thistemplate is made with <i class="icon-heart" aria-hidden="true"></i>
+                    by <a href="/" target="_blank" class="text-muted">DiegoGaleano.Dev</a>
+                </p>
+            </footer>
+        </div>
+
+    </div>
+    </div>
+    </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./js/cards.js"></script>
+</body>
+
+</html>
